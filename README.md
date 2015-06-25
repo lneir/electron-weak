@@ -161,3 +161,12 @@ Returns the internal `Array` that `ref` iterates through to invoke the GC
 callbacks. The array can be `push()`ed or `unshift()`ed onto, to have more control
 over the execution order of the callbacks. This is similar in concept to node's
 `EventEmitter#listeners()` function.
+
+Fork Notes
+----------
+This fork adds electron build support, compatible with [electron-updater](https://github.com/evolvelabs/electron-updater).
+
+Binaries available for various platforms on s3, e.g.:
+https://s3.amazonaws.com/evolve-bin/electron-weak/electron-weak-0.1.7-win32-x64-release-master.tgz
+
+See the `package.json` for how the url is composed.

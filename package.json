@@ -1,9 +1,10 @@
 {
-  "author": "Ben Noordhuis <info@bnoordhuis.nl>",
+  "author": "Justin Chase <justin@evolvelabs.com>",
   "contributors": [
-    "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)"
+    "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
+    "Ben Noordhuis <info@bnoordhuis.nl>"
   ],
-  "name": "weak",
+  "name": "electron-weak",
   "description": "Make weak references to JavaScript Objects.",
   "keywords": [
     "weak",
@@ -17,17 +18,22 @@
   "version": "0.4.1",
   "repository": {
     "type": "git",
-    "url": "git://github.com/TooTallNate/node-weak.git"
+    "url": "git://github.com/evolvelabs/electron-weak.git"
   },
   "main": "lib/weak.js",
   "scripts": {
-    "test": "mocha -gc --reporter spec"
+    "test": "mocha -gc --reporter spec",
+    "install": "bash ./node_modules/electron-updater-tools/bin/elinst"
+  },
+  "engines": {
+    "node": ">=2.2.1"
   },
   "dependencies": {
-    "bindings": "*",
-    "nan": "~1.8.4"
+    "bindings": "*"
   },
   "devDependencies": {
-    "mocha": "~2.1.0"
+    "nan": "~1.8.4",
+    "mocha": "~2.1.0",
+    "electron-updater-tools": "~0.0.x"
   }
 }

@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include "node.h"
 #include "nan.h"
+#include <delay_load_hook.h>
 
 using namespace v8;
 using namespace node;

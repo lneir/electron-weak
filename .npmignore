@@ -1,0 +1,7 @@
+*.tgz
+*.yml
+*.gyp
+.amazon
+build/
+src/
+test/

@@ -5,7 +5,7 @@
     "Ben Noordhuis <info@bnoordhuis.nl>"
   ],
   "name": "electron-weak",
-  "description": "Make weak references to JavaScript Objects.",
+  "description": "This is a fork of the node-weak project, adding electron builds and binaries.",
   "keywords": [
     "weak",
     "reference",
@@ -15,7 +15,7 @@
     "function",
     "callback"
   ],
-  "version": "0.4.1",
+  "version": "0.4.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/evolvelabs/electron-weak.git"

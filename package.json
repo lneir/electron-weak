@@ -23,11 +23,14 @@
   "main": "lib/weak.js",
   "scripts": {
     "test": "mocha -gc --reporter spec",
-    "install": "bash ./node_modules/electron-updater-tools/bin/elinst"
+    "install": "bash elinst"
   },
   "engines": {
     "node": ">=2.2.1"
   },
+  "binaries": [
+    "https://s3.amazonaws.com/evolve-bin/{name}/{name}-{version}-{platform}-{arch}-{configuration}-{channel}.tgz"
+  ],
   "dependencies": {
     "bindings": "*"
   },

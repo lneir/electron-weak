@@ -42,12 +42,12 @@ test_script:
   - cmd: npm test
 
 build_script:
-  - bash %bin_dir%/elb --target %target% configure x64 release
-  - bash %bin_dir%/elb --target %target% configure x86 release
+  - %bin_dir%/elb configure configure release --target %target% x64
+  - %bin_dir%/elb configure configure release --target %target% x86
 
 after_build:
-  - bash %bin_dir%/elpack --channel %APPVEYOR_REPO_BRANCH% --configuration release --arch x64
-  - bash %bin_dir%/elpack --channel %APPVEYOR_REPO_BRANCH% --configuration release --arch x86
+  - %bin_dir%/elpack --channel %APPVEYOR_REPO_BRANCH% --configuration release --arch x64
+  - %bin_dir%/elpack --channel %APPVEYOR_REPO_BRANCH% --configuration release --arch x86
   - npm pack
 
 deploy_script:

@@ -9,7 +9,7 @@ version: "{build}"
 environment:
   target: "0.28.2"
   nodejs_version: "2.3.1"  
-  bin_dir: ./node_modules/electron-updater-tools/bin
+  bin_dir: ./node_modules/.bin
   publish_binary: false
   s3accessKeyId:
     secure: PVDgucwZsp5vUQ/xtHKh0zZKLrNp9Bx/6KrR+1HjXBA=

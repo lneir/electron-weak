@@ -26,7 +26,7 @@
     "install": "bash ./node_modules/.bin/elinst"
   },
   "engines": {
-    "node": ">=2.2.1"
+    "node": ">=2.3.1"
   },
   "binaries": [
     "https://s3.amazonaws.com/evolve-bin/{name}/{name}-{version}-{platform}-{arch}-{configuration}-{channel}.tgz"

@@ -39,8 +39,7 @@ test_script:
   - ps: "npm test # PowerShell" # Pass comment to PS for easier debugging
   - cmd: npm test
 
-# Don't actually build.
-build: off
+build_script:
   - bash %bin_dir%/elb --target %target% configure x64 release
   - bash %bin_dir%/elb --target %target% configure x86 release
 

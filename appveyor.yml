@@ -28,6 +28,8 @@ install:
   # Publish builds from tags
   - for /f "delims=" %%i in ('git describe --tags --always HEAD') do set HEAD=%%i
   - if "%APPVEYOR_REPO_BRANCH%" == "%HEAD%" ( set PUBLISH_BINARY=true )
+  - echo branch=%APPVEYOR_REPO_BRANCH%
+  - echo publish=%PUBLISH_BINARY%
 
 # Post-install test scripts.
 test_script:
@@ -44,10 +46,10 @@ build_script:
   - bash %bin_dir%/elb --target %target% configure x86 release
 
 after_build:
-  - node %bin_dir%/elpack --channel %APPVEYOR_REPO_BRANCH% --arch x64 --configuration release
-  - node %bin_dir%/elpack --channel %APPVEYOR_REPO_BRANCH% --arch x86 --configuration release
+  - bash %bin_dir%/elpack --channel %APPVEYOR_REPO_BRANCH% --configuration release --arch x64
+  - bash %bin_dir%/elpack --channel %APPVEYOR_REPO_BRANCH% --configuration release --arch x86
   - npm pack
 
 deploy_script:
-  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -b evolve-bin -c %APPVEYOR_REPO_BRANCH% -a x64 -i %s3accessKeyId% -k %s3secretAccessKey% -C release )
-  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -b evolve-bin -c %APPVEYOR_REPO_BRANCH% -a x86 -i %s3accessKeyId% -k %s3secretAccessKey% -C release )
+  - if "%PUBLISH_BINARY%" == "true" ( bash %bin_dir%/elpub -b evolve-bin -c %APPVEYOR_REPO_BRANCH% -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x64 )
+  - if "%PUBLISH_BINARY%" == "true" ( bash %bin_dir%/elpub -b evolve-bin -c %APPVEYOR_REPO_BRANCH% -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x86 )

@@ -2,6 +2,10 @@ language: node_js
 node_js:
   - "iojs-v2.2.1"
 
+os:
+  - linux
+  - osx
+
 env:
   global:
     - target: 0.28.2
@@ -14,7 +18,9 @@ before_install:
   # native dependencies
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
   - sudo apt-get update -qq
-  - sudo apt-get install -qq gcc-4.8 g++-4.8 gcc-4.8-multilib g++-4.8-multilib libelf-dev
+  - sudo apt-get install -qq gcc-4.8 g++-4.8 libelf-dev
+  # x86 not supported on osx
+  - if [[ $TRAVIS_OS_NAME != osx ]]; then sudo apt-get install -qq gcc-4.8.multilib g++-4.8-multilib; fi
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
   # npm dependencies
   - npm install node-gyp -g
@@ -29,12 +35,12 @@ before_install:
 
 script:
   - elb configure --target ${target} release x64
-  - elb configure --target ${target} release x86
+  - if [[ $TRAVIS_OS_NAME != osx ]]; then elb configure --target ${target} release x86; fi
 
 after_success:
   # pack the binaries for this platform
   - elpack --configuration release --arch x64
-  - elpack --configuration release --arch x86
+  - if [[ $TRAVIS_OS_NAME != osx ]]; then elpack --configuration release --arch x86; fi
   # publish to s3
   - if [[ $PUBLISH_BINARY == true ]]; then elpub -b evolve-bin -i $s3accessKeyId -k $s3secretAccessKey -C release -a x64; fi
-  - if [[ $PUBLISH_BINARY == true ]]; then elpub -b evolve-bin -i $s3accessKeyId -k $s3secretAccessKey -C release -a x86; fi
+  - if [[ $PUBLISH_BINARY == true ] && [ $TRAVIS_OS_NAME != osx ]]; then elpub -b evolve-bin -i $s3accessKeyId -k $s3secretAccessKey -C release -a x86; fi

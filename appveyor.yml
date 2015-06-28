@@ -35,10 +35,10 @@ build_script:
   - bash elb --target %target% configure release x86
 
 after_build:
-  - node elpack --configuration release --arch x64
-  - node elpack --configuration release --arch x86
+  - elpack --configuration release --arch x64
+  - elpack --configuration release --arch x86
   - npm pack
 
 deploy_script:
-  - if "%PUBLISH_BINARY%" == "true" ( node nwpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x64 )
-  - if "%PUBLISH_BINARY%" == "true" ( node nwpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x86 )
+  - if "%PUBLISH_BINARY%" == "true" ( nwpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x64 )
+  - if "%PUBLISH_BINARY%" == "true" ( nwpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x86 )

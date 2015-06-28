@@ -7,6 +7,7 @@ environment:
   target: "0.28.2"
   nodejs_version: "2.2.1"
   publish_binary: false
+  bin_dir: ./node_modules/electron-updater-tools/bin
   s3accessKeyId:
     secure: PVDgucwZsp5vUQ/xtHKh0zZKLrNp9Bx/6KrR+1HjXBA=
   s3secretAccessKey:
@@ -16,7 +17,6 @@ environment:
 install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version $env:platform
-  - set PATH=./node_modules/.bin;%PATH%
   # install modules
   - npm config set loglevel warn
   - npm install -g is-property # workaround until node 2.3.1
@@ -31,14 +31,13 @@ test_script:
   - npm test
 
 build_script:
-  - bash elb --target %target% configure release x64
-  - bash elb --target %target% configure release x86
+  - bash %bin_dir%/elb --target %target% configure release x64
+  - bash %bin_dir%/elb --target %target% configure release x86
 
 after_build:
-  - elpack --configuration release --arch x64
-  - elpack --configuration release --arch x86
-  - npm pack
+  - node %bin_dir/elpack --configuration release --arch x64
+  - node %bin_dir/elpack --configuration release --arch x86
 
 deploy_script:
-  - if "%PUBLISH_BINARY%" == "true" ( nwpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x64 )
-  - if "%PUBLISH_BINARY%" == "true" ( nwpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x86 )
+  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/nwpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x64 )
+  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/nwpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x86 )

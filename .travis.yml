@@ -5,7 +5,7 @@ node_js:
 env:
   global:
     - target: 0.28.2
-    - bin_dir: ./node_modules/electron-updater-tools/bin
+    - PATH: ./node_modules/electron-updater-tools/bin:$PATH
     # s3accessKeyId
     # secure: "JVVF/NB+ScBOntK8WADzlZvHjYpf4im/Ku57xYcFsiuFBWq8cfRvGSzUhkBfY7BpoCr5vPFmdZWo5rKxhXrStdaj73z6rK7rD+6eAVc0z1k9qqjnMnWYG3W/6TSaFT1xpk+1urx2wrp4B/QEsCXGPIA07oCbksiNEDAUSKZQURg+E0ic+PyxkdXwO+WCF+PfG0rHhjrDWiq+wZMxnXrGZ6A79cCoEsYR7hqQCv1zq9myE5jbfDgUmR+xhE41akd0UQdp8L6aqMJw13Q3VJPfTnBdMsR/W98NxUyeAslcQuzQpeQVs7Hl2ntPe4Ne3j26iJbCkIHvfxb1sJhS+Q5syulPnTKR9zccvSBlC7iKsSzAr9Fg4mdMxn+3/xhMl/Tc7hjqcUnGhxvizMJKde6VzTxaRZxrkmZwexlBdNcROKSho7X+sbZxd6nOLU15as67oxdBMDP0Tm1zOZhGraE993Wq6dkqi3cLYxPPfvDs/7gYXyYZdWo96M1QBFJtIwTWeN/yasRIjdo+rphLuPqsp0OMrJsvY0yM4Dg24lHPqX0P9YUq4bmNLG8vU1T/b+Fpk44Wn9ogegpPdN8gYEFoDSuGZB9azEx9rYSSfQS9llx8L6jtwRSsJ2vWdtL1krXAvgMzj6EvvnVZTEC2vVuQS5fqwriHFmjwawvBU4cjgg8="
     # s3secretAccessKey
@@ -29,13 +29,13 @@ before_install:
   - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then PUBLISH_BINARY=true; fi;
 
 script:
-  - $bin_dir/elb configure x64 release --target ${target}
-  - $bin_dir/elb configure x86 release --target ${target}
+  - elb configure --target ${target} release x64
+  - elb configure --target ${target} release x86
 
 after_success:
   # pack the binaries for this platform
-  - node $bin_dir/elpack --channel $TRAVIS_BRANCH --arch x64 --configuration release
-  - node $bin_dir/elpack --channel $TRAVIS_BRANCH --arch x86 --configuration release
+  - elpack --configuration release --arch x64
+  - elpack --configuration release --arch x86
   # publish to s3
-  - if [[ $PUBLISH_BINARY == true ]]; then node $bin_dir/elpub -c $TRAVIS_BRANCH -b evolve-bin -a x64 -i $s3accessKeyId -k $s3secretAccessKey -C release; fi
-  - if [[ $PUBLISH_BINARY == true ]]; then node $bin_dir/elpub -c $TRAVIS_BRANCH -b evolve-bin -a x86 -i $s3accessKeyId -k $s3secretAccessKey -C release; fi
+  - if [[ $PUBLISH_BINARY == true ]]; then elpub -b evolve-bin -i $s3accessKeyId -k $s3secretAccessKey -C release -a x64; fi
+  - if [[ $PUBLISH_BINARY == true ]]; then elpub -b evolve-bin -i $s3accessKeyId -k $s3secretAccessKey -C release -a x86; fi

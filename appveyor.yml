@@ -5,8 +5,7 @@ version: "{build}"
 # Test against this version of iojs.js
 environment:
   target: "0.28.2"
-  nodejs_version: "2.2.1"  
-  PATH: ./node_modules/electron-updater-tools/bin;%PATH%
+  nodejs_version: "2.2.1"
   publish_binary: false
   s3accessKeyId:
     secure: PVDgucwZsp5vUQ/xtHKh0zZKLrNp9Bx/6KrR+1HjXBA=
@@ -17,6 +16,7 @@ environment:
 install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version $env:platform
+  - set PATH=./node_modules/.bin;%PATH%
   # install modules
   - npm config set loglevel warn
   - npm install -g is-property # workaround until node 2.3.1

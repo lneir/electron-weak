@@ -1,15 +1,12 @@
-# http://www.appveyor.com/docs/appveyor-yml
-
-# Set build version format here instead of in the admin panel.
 os: Visual Studio 2015 CTP
 platform: x64
 version: "{build}"
 
-# Test against these versions of Node.js.
+# Test against this version of iojs.js
 environment:
   target: "0.28.2"
-  nodejs_version: "2.3.1"  
-  bin_dir: ./node_modules/.bin
+  nodejs_version: "2.2.1"  
+  PATH: ./node_modules/electron-updater-tools/bin;%PATH%
   publish_binary: false
   s3accessKeyId:
     secure: PVDgucwZsp5vUQ/xtHKh0zZKLrNp9Bx/6KrR+1HjXBA=
@@ -18,9 +15,10 @@ environment:
 
 # Install scripts. (runs after repo cloning)
 install:
-  # Get the latest stable version of Node 0.STABLE.latest
-  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
-  # Install dependencies
+  # Get the latest stable version of Node.js or io.js
+  - ps: Install-Product node $env:nodejs_version $env:platform
+  # install modules
+  - npm config set loglevel warn
   - npm install -g is-property # workaround until node 2.3.1
   - npm install -g node-gyp
   - npm install -g electron-prebuilt@%target%
@@ -28,28 +26,19 @@ install:
   # Publish builds from tags
   - for /f "delims=" %%i in ('git describe --tags --always HEAD') do set HEAD=%%i
   - if "%APPVEYOR_REPO_BRANCH%" == "%HEAD%" ( set PUBLISH_BINARY=true )
-  - echo branch=%APPVEYOR_REPO_BRANCH%
-  - echo publish=%PUBLISH_BINARY%
 
-# Post-install test scripts.
 test_script:
-  # Output useful info for debugging.
-  - node --version
-  - npm --version
-  # We test multiple Windows shells because of Node.js stdout buffering issues:
-  # https://github.com/joyent/node/issues/3584
-  - ps: "npm test # PowerShell" # Pass comment to PS for easier debugging
-  - cmd: npm test
+  - npm test
 
 build_script:
-  - %bin_dir%/elb configure configure release --target %target% x64
-  - %bin_dir%/elb configure configure release --target %target% x86
+  - bash elb --target %target% configure release x64
+  - bash elb --target %target% configure release x86
 
 after_build:
-  - %bin_dir%/elpack --channel %APPVEYOR_REPO_BRANCH% --configuration release --arch x64
-  - %bin_dir%/elpack --channel %APPVEYOR_REPO_BRANCH% --configuration release --arch x86
+  - node elpack --configuration release --arch x64
+  - node elpack --configuration release --arch x86
   - npm pack
 
 deploy_script:
-  - if "%PUBLISH_BINARY%" == "true" ( bash %bin_dir%/elpub -b evolve-bin -c %APPVEYOR_REPO_BRANCH% -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x64 )
-  - if "%PUBLISH_BINARY%" == "true" ( bash %bin_dir%/elpub -b evolve-bin -c %APPVEYOR_REPO_BRANCH% -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x86 )
+  - if "%PUBLISH_BINARY%" == "true" ( node nwpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x64 )
+  - if "%PUBLISH_BINARY%" == "true" ( node nwpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x86 )

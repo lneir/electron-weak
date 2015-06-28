@@ -33,7 +33,7 @@
   ],
   "dependencies": {
     "bindings": "*",    
-    "electron-updater-tools": "~0.0.x"
+    "electron-updater-tools": "~0.1.x"
   },
   "devDependencies": {
     "nan": "~1.8.4",

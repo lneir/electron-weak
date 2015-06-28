@@ -35,8 +35,8 @@ build_script:
   - bash %bin_dir%/elb --target %target% configure release x86
 
 after_build:
-  - node %bin_dir/elpack --configuration release --arch x64
-  - node %bin_dir/elpack --configuration release --arch x86
+  - node %bin_dir%/elpack --configuration release --arch x64
+  - node %bin_dir%/elpack --configuration release --arch x86
 
 deploy_script:
   - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/nwpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x64 )

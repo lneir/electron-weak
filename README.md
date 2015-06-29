@@ -1,8 +1,8 @@
 node-weak
 =========
 ### Make weak references to JavaScript Objects.
-[![Build Status](https://travis-ci.org/TooTallNate/node-weak.svg?branch=master)](https://travis-ci.org/TooTallNate/node-weak)
-[![Build Status](https://ci.appveyor.com/api/projects/status/09lf09d1a5hm24bq)](https://ci.appveyor.com/project/TooTallNate/node-weak)
+[![Build Status](https://travis-ci.org/evolvelabs/electron-weak.svg?branch=master)](https://travis-ci.org/evolvelabs/electron-weak)
+[![Build status](https://ci.appveyor.com/api/projects/status/sebw262und14jd6m?svg=true)](https://ci.appveyor.com/project/BlairEvolve/electron-weak)
 
 On certain rarer occasions, you run into the need to be notified when a JavaScript
 object is going to be garbage collected. This feature is exposed to V8's C++ API,
@@ -166,7 +166,4 @@ Fork Notes
 ----------
 This fork adds electron build support, compatible with [electron-updater](https://github.com/evolvelabs/electron-updater).
 
-Binaries available for various platforms on s3, e.g.:
-https://s3.amazonaws.com/evolve-bin/electron-weak/electron-weak-0.1.7-win32-x64-release-master.tgz
-
-See the `package.json` for how the url is composed.
+See the `package.json` for pre-built binary url.

@@ -2,6 +2,12 @@
 #node_js:
 #  - "iojs"
 
+git:
+  depth: 10
+
+env:
+  - NODE_VERSION=iojs
+
 os:
   - linux
   - osx
@@ -17,14 +23,17 @@ env:
 
 before_install:
   # nvm is not yet supported on osx, manually install
-  - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
+  - git clone https://github.com/creationix/nvm.git /tmp/.nvm
+  - source /tmp/.nvm/nvm.sh
+  - nvm install $NODE_VERSION
+  - nvm use $NODE_VERSION
   # native dependencies
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq gcc-4.8 g++-4.8 libelf-dev
-  # x86 not supported on osx
-  - if [[ $TRAVIS_OS_NAME != osx ]]; then sudo apt-get install -qq gcc-4.8.multilib g++-4.8-multilib; fi
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
+  - if [ $TRAVIS_OS_NAME == "linux" ]; then
+      sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+      sudo apt-get update -qq
+      sudo apt-get install -qq gcc-4.8 g++-4.8 gcc-4.8.multilib g++-4.8-multilib libelf-dev
+      sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
+    fi
   # Only Publish when building a tag
   - if [[ $TRAVIS_BRANCH == `git describe --tags --always HEAD` ]]; then PUBLISH_BINARY=true; fi;
   # or if we put [publish binary] in the commit message

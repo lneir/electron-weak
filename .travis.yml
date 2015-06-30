@@ -5,18 +5,16 @@
 git:
   depth: 10
 
-env:
-  - NODE_VERSION=iojs
-
 os:
   - linux
   - osx
 
 env:
   global:
-    - target: 0.28.2
     - PATH: ./node_modules/electron-updater-tools/bin:$PATH
     - PUBLISH_BINARY: false
+    - NODE_VERSION: iojs
+    - ELECTRON_VERSION: 0.28.2
     # Other available variables:
     # s3accessKeyId
     # s3secretAccessKey
@@ -44,12 +42,12 @@ install:
   - nvm install iojs
   # npm dependencies
   - npm install node-gyp -g
-  - npm install electron-prebuilt@${target} -g
+  - npm install electron-prebuilt -g
   - npm install
 
 script:
-  - elb configure --target ${target} release x64
-  - if [[ $TRAVIS_OS_NAME != osx ]]; then elb configure --target ${target} release x86; fi
+  - elb configure release x64
+  - if [[ $TRAVIS_OS_NAME != osx ]]; then elb configure release x86; fi
 
 after_success:
   # pack the binaries for this platform

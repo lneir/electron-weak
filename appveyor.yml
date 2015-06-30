@@ -29,6 +29,7 @@ install:
   # Or if COMMIT_MESSAGE contains [publish binary]
   - for /f "delims=" %%i in ('git show -s --oneline HEAD') do set COMMIT_MESSAGE=%%i
   - (echo %COMMIT_MESSAGE% | find "[publish binary]" > nul) && (set PUBLISH_BINARY=true) || (ver > nul)
+  = echo PUBLISH_BINARY=%PUBLISH_BINARY%
 
 test_script:
   - npm test

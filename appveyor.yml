@@ -5,7 +5,7 @@ version: "{build}"
 # Test against this version of iojs.js
 environment:
   target: "0.28.2"
-  nodejs_version: "2.3.1"
+  nodejs_version: "2.2.1"
   publish_binary: false
   bin_dir: ./node_modules/electron-updater-tools/bin
   s3accessKeyId:

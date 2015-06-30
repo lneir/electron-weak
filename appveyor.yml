@@ -21,7 +21,7 @@ install:
   - npm config set loglevel warn
   - npm install -g is-property # workaround until node 2.3.1
   - npm install -g node-gyp
-  - npm install -g electron-prebuilt
+  - npm install -g electron-prebuilt@%target%
   - npm install
   # Publish builds from tags
   - for /f "delims=" %%i in ('git describe --tags --always HEAD') do set HEAD=%%i
@@ -29,7 +29,7 @@ install:
   # Or if COMMIT_MESSAGE contains [publish binary]
   - for /f "delims=" %%i in ('git show -s --oneline HEAD') do set COMMIT_MESSAGE=%%i
   - (echo %COMMIT_MESSAGE% | find "[publish binary]" > nul) && (set PUBLISH_BINARY=true) || (ver > nul)
-  = echo PUBLISH_BINARY=%PUBLISH_BINARY%
+  - echo PUBLISH_BINARY=%PUBLISH_BINARY%
 
 test_script:
   - npm test

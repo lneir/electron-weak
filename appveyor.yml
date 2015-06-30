@@ -27,7 +27,7 @@ install:
   - for /f "delims=" %%i in ('git describe --tags --always HEAD') do set HEAD=%%i
   - if "%APPVEYOR_REPO_BRANCH%" == "%HEAD%" ( set PUBLISH_BINARY=true )
   # Or if COMMIT_MESSAGE contains [publish binary]
-  - for /f "delims=" %%i in ('git show -s --format=%B %TRAVIS_COMMIT%') do set COMMIT_MESSAGE=%%i
+  - for /f "delims=" %%i in ('git show -s --format=%B HEAD') do set COMMIT_MESSAGE=%%i
   - echo %COMMIT_MESSAGE% | find "[publish binary]"
   - if %ERRORLEVEL% EQU 0 ( set PUBLISH_BINARY=true )
 

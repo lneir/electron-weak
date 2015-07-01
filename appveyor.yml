@@ -16,11 +16,10 @@ install:
   - npm install -g node-gyp
   - npm install -g electron-prebuilt@%target%
   - npm install
-  # Publish builds from tags
-  - for /f "delims=" %%i in ('git describe --tags --always HEAD') do set HEAD=%%i
-  - if "%APPVEYOR_REPO_BRANCH%" == "%HEAD%" ( set PUBLISH_BINARY=true )
-  # Or if APPVEYOR_REPO_COMMIT_MESSAGE  contains [publish binary]
-  - ps: if($env:APPVEYOR_REPO_COMMIT_MESSAGE.contains('[publish binary]')) { $env:PUBLISH_BINARY = 'true' } else { $env:PUBLISH_BINARY = 'false' }
+  # Publish builds when tagged
+  # Or if APPVEYOR_REPO_COMMIT_MESSAGE contains [publish binary]
+  - ps: if($env:APPVEYOR_REPO_TAG) { $env:PUBLISH_BINARY = 'true' }
+  - ps: if($env:APPVEYOR_REPO_COMMIT_MESSAGE.contains('[publish binary]')) { $env:PUBLISH_BINARY = 'true' }
 
 test_script:
   - npm test

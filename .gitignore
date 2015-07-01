@@ -1,4 +1,5 @@
 *.tgz
+*.log
 .amazon
 /node_modules
 /build

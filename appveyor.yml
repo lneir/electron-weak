@@ -18,7 +18,6 @@ install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version $env:platform
   # install modules
-  - npm config set loglevel warn
   - npm install -g is-property # workaround until node 2.3.1
   - npm install -g node-gyp
   - npm install -g electron-prebuilt@%target%
@@ -26,9 +25,8 @@ install:
   # Publish builds from tags
   - for /f "delims=" %%i in ('git describe --tags --always HEAD') do set HEAD=%%i
   - if "%APPVEYOR_REPO_BRANCH%" == "%HEAD%" ( set PUBLISH_BINARY=true )
-  # Or if COMMIT_MESSAGE contains [publish binary]
-  - for /f "delims=" %%i in ('git show -s --oneline HEAD') do set COMMIT_MESSAGE=%%i
-  - (echo %COMMIT_MESSAGE% | find "[publish binary]" > nul) && (set PUBLISH_BINARY=true) || (ver > nul)
+  # Or if APPVEYOR_REPO_COMMIT_MESSAGE  contains [publish binary]
+  - (echo %APPVEYOR_REPO_COMMIT_MESSAGE% | find "[publish binary]" > nul) && (set PUBLISH_BINARY=true) || (ver > nul)
   - echo PUBLISH_BINARY=%PUBLISH_BINARY%
 
 test_script:

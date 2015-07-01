@@ -2,7 +2,6 @@ os: Visual Studio 2015 CTP
 platform: x64
 version: "{build}"
 
-# Test against this version of iojs.js
 environment:
   target: "0.28.2"
   nodejs_version: "2.2.1"

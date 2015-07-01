@@ -27,6 +27,7 @@ install:
   - if "%APPVEYOR_REPO_BRANCH%" == "%HEAD%" ( set PUBLISH_BINARY=true )
   # Or if APPVEYOR_REPO_COMMIT_MESSAGE  contains [publish binary]
   - (echo %APPVEYOR_REPO_COMMIT_MESSAGE% | find "[publish binary]" > nul) && (set PUBLISH_BINARY=true) || (ver > nul)
+  - echo APPVEYOR_REPO_COMMIT_MESSAGE=%APPVEYOR_REPO_COMMIT_MESSAGE%
   - echo PUBLISH_BINARY=%PUBLISH_BINARY%
 
 test_script:

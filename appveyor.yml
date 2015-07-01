@@ -8,10 +8,6 @@ environment:
   nodejs_version: "2.2.1"
   publish_binary: false
   bin_dir: ./node_modules/electron-updater-tools/bin
-  s3accessKeyId:
-    secure: PVDgucwZsp5vUQ/xtHKh0zZKLrNp9Bx/6KrR+1HjXBA=
-  s3secretAccessKey:
-    secure: /eTaC32nbaLggEfy5UuubTff2t7ogo7ztazLDA600ln6dG0LiSqWZYMZFBcurpdP
 
 # Install scripts. (runs after repo cloning)
 install:
@@ -40,5 +36,5 @@ after_build:
   - node %bin_dir%/elpack --configuration release --arch x86
 
 deploy_script:
-  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x64 )
-  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x86 )
+  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -b evolve-bin -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x64 )
+  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -b evolve-bin -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x86 )

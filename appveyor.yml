@@ -3,8 +3,7 @@ platform: x64
 version: "{build}"
 
 environment:
-  target: "0.28.2"
-  nodejs_version: "2.2.1"
+  nodejs_version: "2.5.0"
   publish_binary: false
   bin_dir: ./node_modules/electron-updater-tools/bin
 
@@ -14,7 +13,6 @@ install:
   # install modules
   - npm install -g is-property # workaround until node 2.3.1
   - npm install -g node-gyp
-  - npm install -g electron-prebuilt@%target%
   - npm install
   # Publish builds when tagged
   # Or if APPVEYOR_REPO_COMMIT_MESSAGE contains [publish binary]
@@ -25,13 +23,19 @@ test_script:
   - npm test
 
 build_script:
-  - bash %bin_dir%/elb --target %target% configure release x64
-  - bash %bin_dir%/elb --target %target% configure release ia32
+  - bash %bin_dir%/elb configure x64 release
+  - bash %bin_dir%/elb configure x64 debug
+  - bash %bin_dir%/elb configure ia32 release
+  - bash %bin_dir%/elb configure ia32 debug
 
 after_build:
-  - node %bin_dir%/elpack --configuration release --arch x64
-  - node %bin_dir%/elpack --configuration release --arch ia32
+  - node %bin_dir%/elpack --arch x64 --configuration release 
+  - node %bin_dir%/elpack --arch x64 --configuration debug
+  - node %bin_dir%/elpack --arch ia32 --configuration release 
+  - node %bin_dir%/elpack --arch ia32 --configuration debug
 
 deploy_script:
-  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -b evolve-bin -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a x64 )
-  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -b evolve-bin -i %s3accessKeyId% -k %s3secretAccessKey% -C release -a ia32 )
+  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -b evolve-bin -i %s3accessKeyId% -k %s3secretAccessKey% -a x64 -C release )
+  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -b evolve-bin -i %s3accessKeyId% -k %s3secretAccessKey% -a x64 -C debug )
+  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -b evolve-bin -i %s3accessKeyId% -k %s3secretAccessKey% -a ia32 -C release  )
+  - if "%PUBLISH_BINARY%" == "true" ( node %bin_dir%/elpub -b evolve-bin -i %s3accessKeyId% -k %s3secretAccessKey% -a ia32 -C debug  )

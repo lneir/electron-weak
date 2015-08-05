@@ -9,8 +9,7 @@ env:
   global:
     - PATH: ./node_modules/electron-updater-tools/bin:$PATH
     - PUBLISH_BINARY: false
-    - NODE_VERSION: iojs
-    - ELECTRON_VERSION: 0.28.2
+    - NODE_VERSION: 2.5.0
     # Other available variables:
     # s3accessKeyId
     # s3secretAccessKey
@@ -35,20 +34,24 @@ before_install:
   - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then PUBLISH_BINARY=true; fi;
 
 install:
-  - nvm install iojs
   # npm dependencies
   - npm install node-gyp -g
-  - npm install electron-prebuilt -g
   - npm install
 
 script:
-  - elb configure release x64
-  - if [ $TRAVIS_OS_NAME != osx ]; then elb configure release ia32; fi
+  - elb configure x64 release
+  - elb configure x64 debug
+  - if [ $TRAVIS_OS_NAME != osx ]; then elb configure ia32 release; fi
+  - if [ $TRAVIS_OS_NAME != osx ]; then elb configure ia32 debug; fi
 
 after_success:
   # pack the binaries for this platform
-  - elpack --configuration release --arch x64
-  - if [ $TRAVIS_OS_NAME != osx ]; then elpack --configuration release --arch ia32; fi
+  - elpack --arch x64 --configuration release
+  - elpack --arch x64 --configuration debug
+  - if [ $TRAVIS_OS_NAME != osx ]; then elpack --arch ia32 --configuration release; fi
+  - if [ $TRAVIS_OS_NAME != osx ]; then elpack --arch ia32 --configuration debug; fi
   # publish to s3
-  - if [ $PUBLISH_BINARY == true ]; then elpub -b evolve-bin -i $s3accessKeyId -k $s3secretAccessKey -C release -a x64; fi
-  - if [ $PUBLISH_BINARY == true ] && [ $TRAVIS_OS_NAME != osx ]; then elpub -b evolve-bin -i $s3accessKeyId -k $s3secretAccessKey -C release -a ia32; fi
+  - if [ $PUBLISH_BINARY == true ]; then elpub -b evolve-bin -i $s3accessKeyId -k $s3secretAccessKey -a x64 -C release; fi
+  - if [ $PUBLISH_BINARY == true ]; then elpub -b evolve-bin -i $s3accessKeyId -k $s3secretAccessKey -a x64 -C debug; fi
+  - if [ $PUBLISH_BINARY == true ] && [ $TRAVIS_OS_NAME != osx ]; then elpub -b evolve-bin -i $s3accessKeyId -k $s3secretAccessKey -a ia32 -C release; fi
+  - if [ $PUBLISH_BINARY == true ] && [ $TRAVIS_OS_NAME != osx ]; then elpub -b evolve-bin -i $s3accessKeyId -k $s3secretAccessKey -a ia32 -C debug; fi

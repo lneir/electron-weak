@@ -2,7 +2,7 @@ node-weak
 =========
 ### Make weak references to JavaScript Objects.
 [![Build Status](https://travis-ci.org/evolvelabs/electron-weak.svg?branch=master)](https://travis-ci.org/evolvelabs/electron-weak)
-[![Build status](https://ci.appveyor.com/api/projects/status/sebw262und14jd6m?svg=true)](https://ci.appveyor.com/project/BlairEvolve/electron-weak)
+[![Build status](https://ci.appveyor.com/api/projects/status/sebw262und14jd6m?svg=true)](https://ci.appveyor.com/project/EvolveLabs/electron-weak)
 
 On certain rarer occasions, you run into the need to be notified when a JavaScript
 object is going to be garbage collected. This feature is exposed to V8's C++ API,

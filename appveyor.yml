@@ -7,7 +7,6 @@ environment:
   publish_binary: false
   bin_dir: ./node_modules/electron-updater-tools/bin
 
-<<<<<<< HEAD
 install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version $env:platform

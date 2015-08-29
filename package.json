@@ -1,10 +1,11 @@
 {
-  "author": "Justin Chase <justin@evolvelabs.com>",
+  "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
   "contributors": [
-    "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
-    "Ben Noordhuis <info@bnoordhuis.nl>"
+    "Ben Noordhuis <info@bnoordhuis.nl>",
+    "Justin Chase <justin@evolvelabs.com>"
   ],
   "name": "electron-weak",
+  "license": "MIT",
   "description": "This is a fork of the node-weak project, adding electron builds and binaries.",
   "keywords": [
     "weak",
@@ -15,7 +16,7 @@
     "function",
     "callback"
   ],
-  "version": "0.5.0",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/evolvelabs/electron-weak.git"
@@ -33,7 +34,7 @@
     "https://s3.amazonaws.com/evolve-bin/{name}/{name}-{version}-{platform}-{arch}-{configuration}.tgz"
   ],
   "dependencies": {
-    "bindings": "*",
+    "bindings": "^1.2.1",
     "electron-updater-tools": "~0.2.2"
   },
   "devDependencies": {

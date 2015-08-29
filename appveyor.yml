@@ -7,6 +7,7 @@ environment:
   publish_binary: false
   bin_dir: ./node_modules/electron-updater-tools/bin
 
+<<<<<<< HEAD
 install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version $env:platform
@@ -20,6 +21,10 @@ install:
   - ps: if($env:APPVEYOR_REPO_COMMIT_MESSAGE.contains('[publish binary]')) { $env:PUBLISH_BINARY = 'true' }
 
 test_script:
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  # run tests
   # npm test # cannot run tests until appveyor updates their version of node.
 
 build_script:

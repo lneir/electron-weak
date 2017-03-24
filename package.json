@@ -24,7 +24,7 @@
   "main": "lib/weak.js",
   "scripts": {
     "test": "mocha -gc --reporter spec",
-    "install": "bash ./node_modules/.bin/elinst"
+    "install": "bash ./node_modules/.bin/eslint"
   },
   "engines": {
     "node": ">=3.1.0",
